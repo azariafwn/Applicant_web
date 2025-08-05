@@ -1,7 +1,12 @@
+using LearningApplicantWeb;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+var configValue = builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
+DBClass._ConnString = configValue ?? throw new ArgumentNullException("Connection string is not configured.");
 
 var app = builder.Build();
 
