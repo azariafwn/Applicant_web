@@ -155,9 +155,18 @@ namespace LearningApplicantWeb.Models
                     throw new Exception("Email sudah terdaftar.");
                 }
 
+                // method untuk melakukan validasi jika register code sudah ada maka lakukan generate lagi hingga tidak ada yang sama
+                string registerCode = "";
+                do
+                {
+                    registerCode = Helpers.GenerateAlphanumericCode();
+                }
+                while (context.Applicants.Any(x => x.RegisterCode == registerCode));
+
                 var newRow = new Applicant
                 {
                     PositionId = input.PositionId,
+                    RegisterCode = registerCode,
                     FirstName = input.FirstName,
                     LastName = input.LastName,
                     Nik = input.Nik,
