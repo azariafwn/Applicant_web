@@ -29,9 +29,10 @@ namespace LearningApplicantWeb.Models
             public string Phone { get; set; } = null!;
             public string Email { get; set; } = null!;
             public string Education { get; set; } = null!;
+            public List<EF.JobPosition> JobPositions { get; set; } = new List<EF.JobPosition>();
             public Create()
             {
-
+                JobPositions = JobPositionVM.Method.GetDataAll();
             }
         }
 
@@ -49,6 +50,7 @@ namespace LearningApplicantWeb.Models
             public string Phone { get; set; } = null!;
             public string Email { get; set; } = null!;
             public string Education { get; set; } = null!;
+            public List<EF.JobPosition> JobPositions { get; set; } = new List<EF.JobPosition>();
             public Edit()
             {
 
@@ -60,6 +62,8 @@ namespace LearningApplicantWeb.Models
                 {
                     throw new Exception("Applicant not found or already deleted.");
                 }
+
+                JobPositions = JobPositionVM.Method.GetDataAll();
 
                 Id = data.ApplicantId;
                 PositionId = data.PositionId;

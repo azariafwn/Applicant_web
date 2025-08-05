@@ -1,0 +1,193 @@
+﻿@model LearningApplicantWeb.Models.UserApplicantVM.Index
+@{
+    Layout = "_LayoutForm";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="form-applicant" asp-controller="UserApplicant" asp-action="Index" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="row">
+                        <!-- First Name -->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="FirstName" class="form-label"></label>
+                                <input asp-for="FirstName" class="form-control" placeholder="Enter your firstname" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="LastName" class="form-label"></label>
+                                <input asp-for="LastName" class="form-control" placeholder="Enter your lastname" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Position -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label asp-for="PositionId" class="form-label">Position</label>
+                                @{
+                                    var positionList = Model.JobPositions.Select(p => new SelectListItem
+                                    {
+                                        Value = p.PositionId.ToString(),
+                                        Text = p.PositionName
+                                    });
+                                }
+                                <select asp-for="PositionId" asp-items="positionList" class="form-select">
+                                    <option value="">-- Silahkan Pilih --</option>
+                                </select>
+                                <span asp-validation-for="PositionId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- NIK -->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="Nik" class="form-label"></label>
+                                <input asp-for="Nik" class="form-control" placeholder="Enter your NIK" />
+                                <span asp-validation-for="Nik" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Birth Place -->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="BirthPlace" class="form-label"></label>
+                                <input asp-for="BirthPlace" class="form-control" placeholder="Enter birth place" />
+                                <span asp-validation-for="BirthPlace" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Birth Date -->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="BirthDate" class="form-label"></label>
+                                <input asp-for="BirthDate" type="date" class="form-control" />
+                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="Gender" class="form-label">Gender</label>
+                                <select asp-for="Gender" class="form-select">
+                                    <option value="1">Male</option>
+                                    <option value="2">Female</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label asp-for="Address" class="form-label"></label>
+                                <input asp-for="Address" class="form-control" placeholder="Enter address" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="Phone" class="form-label"></label>
+                                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" />
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" placeholder="Enter email address" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Education -->
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label asp-for="Education" class="form-label"></label>
+                                <input asp-for="Education" class="form-control" placeholder="Enter education background" />
+                                <span asp-validation-for="Education" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="col-lg-12">
+                            <div class="text-end">
+                                <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="registerCodeOutput" style="display:none">
+
+</div>
+
+@section Scripts {
+        <script>
+            function submitForm() {
+
+            var formData = $('#form-applicant').serialize();
+
+            // Perform AJAX request
+            $.ajax({
+                url: $('#form-applicant').attr('action'),
+                method: 'POST',
+                data: formData,
+                success: function (response) {
+                    console.log(response)
+                    if (response.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: response.message,
+                            showConfirmButton: true
+                        }).then(() => {
+                                    $('#registerCodeOutput').html(`
+            <div class="card border-success">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Your Register Code</h5>
+                    <p class="card-text fw-bold fs-4">${response.data.registerCode}</p>
+                </div>
+            </div>
+        `).fadeIn();
+                        });
+                    } else {
+                        Toastify({
+                            text: response.message,
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "right",
+                            backgroundColor: "#ff0000",
+                        }).showToast();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle general error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while processing your request. Please try again.',
+                    });
+                }
+            });
+        }
+        </script>
+}

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LearningApplicantWeb.Controllers
 {
+    
     public class ApplicantController : Controller
     {
         [HttpGet]
@@ -10,6 +11,9 @@ namespace LearningApplicantWeb.Controllers
         {
             try
             {
+                string session = HttpContext.Session.GetString("UserId") ?? "";
+                if (string.IsNullOrEmpty(session)) return RedirectToAction("Index", "Login");
+
                 var model = new Models.ApplicantVM.Index();
                 return View(model);
             }

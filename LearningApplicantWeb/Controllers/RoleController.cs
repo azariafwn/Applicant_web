@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LearningApplicantWeb.Controllers
 {
+    
     public class RoleController : Controller
     {
         [HttpGet]
@@ -10,6 +11,9 @@ namespace LearningApplicantWeb.Controllers
         {
             try
             {
+                string session = HttpContext.Session.GetString("UserId") ?? "";
+                if (string.IsNullOrEmpty(session)) return RedirectToAction("Index", "Login");
+
                 var model = new Models.RoleVM.Index();
                 return View(model);
             }
@@ -42,7 +46,7 @@ namespace LearningApplicantWeb.Controllers
             try
             {
                 string session = HttpContext.Session.GetString("UserId") ?? "ADMIN";
-                Models.RoleVM.Method.Insert(input, session);
+                Models.RoleVM.Method.Insert(input);
 
                 response.Status = true;
                 response.Message = "Data Berhasil Ditambahkan";
@@ -79,7 +83,7 @@ namespace LearningApplicantWeb.Controllers
             try
             {
                 string session = HttpContext.Session.GetString("UserId") ?? "ADMIN";
-                Models.RoleVM.Method.Update(input, session);
+                Models.RoleVM.Method.Update(input);
 
                 response.Status = true;
                 response.Message = "Data Berhasil Ditambahkan";
@@ -116,7 +120,7 @@ namespace LearningApplicantWeb.Controllers
             try
             {
                 string session = HttpContext.Session.GetString("UserId") ?? "ADMIN";
-                Models.RoleVM.Method.Remove(input, session);
+                Models.RoleVM.Method.Remove(input);
 
                 response.Status = true;
                 response.Message = "Data Berhasil Ditambahkan";

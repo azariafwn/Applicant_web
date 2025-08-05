@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LearningApplicantWeb.Controllers
 {
+    
     public class UserApplicantController : Controller
     {
         [HttpGet]
@@ -11,7 +12,7 @@ namespace LearningApplicantWeb.Controllers
             var response = new ResponseBase();
             try
             {
-                var model = new Models.ApplicantVM.Create();
+                var model = new Models.UserApplicantVM.Index();
                 return PartialView(model);
             }
             catch (Exception ex)
@@ -22,16 +23,16 @@ namespace LearningApplicantWeb.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Index(Models.ApplicantVM.Create input)
+        public IActionResult Index(Models.UserApplicantVM.Index input)
         {
             var response = new ResponseBase();
             try
             {
-                string session = HttpContext.Session.GetString("UserId") ?? "ADMIN";
-                Models.ApplicantVM.Method.Insert(input, session);
+                var insert = Models.UserApplicantVM.Method.Insert(input);
 
                 response.Status = true;
                 response.Message = "Data Berhasil Ditambahkan";
+                response.Data = new { registerCode = insert };
                 return Json(response);
             }
             catch (Exception ex)

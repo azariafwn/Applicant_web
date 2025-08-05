@@ -7,7 +7,6 @@ namespace LearningApplicantWeb.Models
 {
     public class UserApplicantVM
     {
-
         public class Index
         { 
             public int PositionId { get; set; }
@@ -15,22 +14,23 @@ namespace LearningApplicantWeb.Models
             public string LastName { get; set; } = null!;
             public string Nik { get; set; } = null!;
             public string BirthPlace { get; set; } = null!;
-            public DateOnly BirthDate { get; set; }
+            public DateOnly BirthDate { get; set; } = DateOnly.FromDateTime(DateTime.Now.AddYears(-20));
             public int Gender { get; set; }
             public string Address { get; set; } = null!;
             public string Phone { get; set; } = null!;
             public string Email { get; set; } = null!;
             public string Education { get; set; } = null!;
+            public List<EF.JobPosition> JobPositions { get; set; } = new List<EF.JobPosition>();
             public Index()
             {
-
+                JobPositions = JobPositionVM.Method.GetDataAll();
             }
         }
 
         
         public class Method
         {
-            public static void Insert(Index input)
+            public static string Insert(Index input)
             {
                 var context = DBClass.GetContext();
 
@@ -87,6 +87,8 @@ namespace LearningApplicantWeb.Models
 
                 context.Applicants.Add(newRow);
                 context.SaveChanges();
+
+                return registerCode; // Mengembalikan kode pendaftaran yang baru dibuat
             }
 
             public static ApplicantStatus CheckStatus(string registerCode)
