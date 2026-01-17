@@ -4,9 +4,6 @@
 
 **LearningApplicantWeb** adalah sebuah aplikasi web yang dibangun menggunakan ASP.NET Core MVC untuk mengelola data pelamar (applicants). Proyek ini dirancang sebagai platform untuk mempraktikkan dan mendemonstrasikan implementasi aplikasi web *end-to-end* dengan arsitektur yang bersih dan fitur antarmuka yang modern.
 
-### 📸 Screenshot Aplikasi
-![Tampilan Website]([link-ke-screenshot.png])
-
 ---
 
 ## ✨ Fitur Utama
